@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.2.0" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.49.0.2168" />
   </ItemGroup>
 
 </Project>
