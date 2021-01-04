@@ -11,18 +11,12 @@ namespace WoM_Balance_Bot
         public static void Main(string[] args)
             => new Program().MainAsync().GetAwaiter().GetResult();
 
-        private Task Log(LogMessage msg)
-        {
-            Console.WriteLine(msg.ToString());
-            return Task.CompletedTask;
-        }
-
         private DiscordSocketClient _client;
 
         public async Task MainAsync()
         {
             _client = new DiscordSocketClient();
-
+            _client.MessageReceived += CommandHandler;
             _client.Log += Log;
 
             var token = File.ReadAllText("token");
@@ -32,6 +26,46 @@ namespace WoM_Balance_Bot
 
             // Block this task until the program is closed.
             await Task.Delay(-1);
+        }
+
+        private Task Log(LogMessage msg)
+        {
+            Console.WriteLine(msg.ToString());
+            return Task.CompletedTask;
+        }
+
+        // Bot ignore policies and main trigger.
+        private Task CommandHandler(SocketMessage message)
+        {
+            //variables
+            string command = "";
+            int lengthOfCommand = -1;
+
+            //filtering messages begin here
+            if (!message.Content.StartsWith('!'))
+                return Task.CompletedTask;
+
+            if (message.Author.IsBot)
+                return Task.CompletedTask;
+
+            if (message.Content.Contains(' '))
+                lengthOfCommand = message.Content.IndexOf(' ');
+            else
+                lengthOfCommand = message.Content.Length;
+
+            command = message.Content.Substring(1, lengthOfCommand - 1).ToLower();
+
+            //Commands begin here
+            if (command.Equals("info"))
+            {
+                message.Channel.SendMessageAsync($@"Hello {message.Author.Mention}, I am here to assist the WoM staff managing their internal balance!");
+            }
+            else if (command.Equals("age"))
+            {
+                message.Channel.SendMessageAsync($@"Your account was created at {message.Author.CreatedAt.DateTime.Date}");
+            }
+
+            return Task.CompletedTask;
         }
     }
 }
