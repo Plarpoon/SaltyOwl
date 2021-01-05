@@ -1,4 +1,6 @@
+/.vs
 /.vscode
 /bin
 /obj
+GlobalSuppressions.cs
 bot-token.txt
