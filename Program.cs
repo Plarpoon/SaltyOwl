@@ -9,7 +9,17 @@ namespace WoM_Balance_Bot
     public class Program
     {
         public static void Main(string[] args)
-            => new Program().MainAsync().GetAwaiter().GetResult();
+        {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
+            _ = new GoogleAPI();
+            GoogleAPI.Sheets();
+
+            new Program().MainAsync().GetAwaiter().GetResult();
+        }
 
         private DiscordSocketClient _client;
 
@@ -37,32 +47,34 @@ namespace WoM_Balance_Bot
         // Bot ignore policies and main trigger.
         private Task CommandHandler(SocketMessage message)
         {
-            //variables
+            //  variables
             string command = "";
             int lengthOfCommand = -1;
 
-            //filtering messages begin here
+            //  filtering messages begin here
             if (!message.Content.StartsWith('!'))
                 return Task.CompletedTask;
 
-            if (message.Author.IsBot)
+            if (!message.Author.IsBot)
+            {
+                if (message.Content.Contains(' '))
+                    lengthOfCommand = message.Content.IndexOf(' ');
+                else
+                    lengthOfCommand = message.Content.Length;
+
+                command = message.Content[1..lengthOfCommand].ToLower();
+
+                //  Commands begin here
+                if (command.Equals("info")) //  prints infos about the bot
+                {
+                    message.Channel.SendMessageAsync($@"Hello {message.Author.Mention}, I am here to assist the WoM staff!");
+                }
+                else if (command.Equals("balance"))
+                {
+                    message.Channel.SendMessageAsync($@"Your account was created at {message.Author.CreatedAt.DateTime.Date}");
+                }
+
                 return Task.CompletedTask;
-
-            if (message.Content.Contains(' '))
-                lengthOfCommand = message.Content.IndexOf(' ');
-            else
-                lengthOfCommand = message.Content.Length;
-
-            command = message.Content.Substring(1, lengthOfCommand - 1).ToLower();
-
-            //Commands begin here
-            if (command.Equals("info"))
-            {
-                message.Channel.SendMessageAsync($@"Hello {message.Author.Mention}, I am here to assist the WoM staff managing their internal balance!");
-            }
-            else if (command.Equals("balance"))
-            {
-                message.Channel.SendMessageAsync($@"Your account was created at {message.Author.CreatedAt.DateTime.Date}");
             }
 
             return Task.CompletedTask;

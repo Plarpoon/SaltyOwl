@@ -1,10 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
-using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -12,15 +10,19 @@ namespace WoM_Balance_Bot
 {
     public class GoogleAPI
     {
-        // If modifying these scopes, delete your previously saved credentials
-        // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
+        //  Time and date.
+        private const string Format = "HH:mm:ss tt";
+
+        //  Google Sheet API init.
         private static readonly string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
 
-        private static readonly string ApplicationName = "wombankrolls";
+        private static readonly string ApplicationName = "WoM Google Spreadsheet Access";
 
-        public static void Main(string[] args)
+        public static void Sheets()
         {
             UserCredential credential;
+
+            Console.WriteLine(DateTime.Now.ToString(Format) + "Google " + "     OAuth login");
 
             using (var stream =
                 new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
@@ -34,7 +36,8 @@ namespace WoM_Balance_Bot
                     "user",
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
+                if (File.Exists("token.json"))
+                    Console.WriteLine("Credential file saved to: " + credPath);
             }
 
             // Create Google Sheets API service.
@@ -47,15 +50,16 @@ namespace WoM_Balance_Bot
             // Define request parameters.
             String spreadsheetId = "16W56LWqt6wDaYAU5xNdTWCdaY_gkuQyl4CE1lPpUui4";
             String range = "Class Data!G163:I";
-            SpreadsheetsResource.ValuesResource.GetRequest request =
+            _ =
                     service.Spreadsheets.Values.Get(spreadsheetId, range);
-
+            /*
+             *      THIS IS EXAMPLE DATA AND NEEDS TO BE DELETED
+             *
             // Prints the names and majors of students in a sample spreadsheet:
             // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
             ValueRange response = request.Execute();
             IList<IList<Object>> values = response.Values;
 
-            /*
             if (values != null && values.Count > 0)
             {
                 Console.WriteLine("Name, Major");
