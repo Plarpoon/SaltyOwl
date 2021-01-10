@@ -2,6 +2,5 @@
 /.vscode
 /bin
 /obj
-GlobalSuppressions.cs
 bot-token.txt
 credentials.json

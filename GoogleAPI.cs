@@ -48,33 +48,25 @@ namespace WoM_Balance_Bot
             });
 
             // Define request parameters.
-            String spreadsheetId = "16W56LWqt6wDaYAU5xNdTWCdaY_gkuQyl4CE1lPpUui4";
-            String range = "Class Data!G163:I";
-            _ =
-                    service.Spreadsheets.Values.Get(spreadsheetId, range);
-            /*
-             *      THIS IS EXAMPLE DATA AND NEEDS TO BE DELETED
-             *
-            // Prints the names and majors of students in a sample spreadsheet:
-            // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-            ValueRange response = request.Execute();
-            IList<IList<Object>> values = response.Values;
+            String spreadsheetId = "16W56LWqt6wDaYAU5xNdTWCdaY_gkuQyl4CE1lPpUui4";  // ID as written in the URL bar.
+            String sheet = "Bank Roll";                                             // Name of the Sheet page in question.
+            String range = $"{sheet}!G159:Y169";                                    // Range of rows to read and scrape.
 
+            var request = service.Spreadsheets.Values.Get(spreadsheetId, range);
+
+            var response = request.Execute();
+            var values = response.Values;
             if (values != null && values.Count > 0)
             {
-                Console.WriteLine("Name, Major");
                 foreach (var row in values)
                 {
-                    // Print columns A and E, which correspond to indices 0 and 4.
-                    Console.WriteLine("{0}, {1}", row[0], row[4]);
+                    //Console.WriteLine("{0} {2}", row[0]);             need to be edited!!!
                 }
             }
             else
             {
                 Console.WriteLine("No data found.");
             }
-            Console.Read();
-            */
         }
     }
 }

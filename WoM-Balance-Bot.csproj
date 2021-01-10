@@ -3,9 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>WoM_Balance_Bot</RootNamespace>
+    <RootNamespace>SaltyOwl</RootNamespace>
     <StartupObject>WoM_Balance_Bot.Program</StartupObject>
     <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>SaltyOwl</AssemblyName>
+    <ApplicationIcon>saltyowl.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
