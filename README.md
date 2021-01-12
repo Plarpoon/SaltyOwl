@@ -1,5 +1,5 @@
-# WoM Bot
-## Discord bot helper for the "World of Mounts" staff.
+# Salty Owl
+## Discord bot for the "World of Mounts" staff.
 
 Remember to add a file in your project folder named "*bot-token.txt*" (in CRLF) which must contain the actual bot token from your https://discord.com/developers/ account.
 
