@@ -65,7 +65,7 @@ namespace WoM_Balance_Bot
                 command = message.Content[1..lengthOfCommand].ToLower();
 
                 //  Commands begin here
-                if (command.Equals("info")) //  prints infos about the bot
+                if (command.Equals("info"))
                 {
                     message.Channel.SendMessageAsync($@"Hello {message.Author.Mention}, I am here to assist the WoM staff!");
                 }

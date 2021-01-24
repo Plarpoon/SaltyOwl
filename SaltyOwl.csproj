@@ -25,11 +25,15 @@
 
   <ItemGroup>
     <None Update="bot-token.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="credentials.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="google-credentials.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="commands\" />
   </ItemGroup>
 
 </Project>

@@ -3,29 +3,35 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Util.Store;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
 namespace WoM_Balance_Bot
 {
-    public class GoogleAPI
+    internal class GoogleAPI
     {
-        //  Time and date.
+        // Time and date.
         private const string Format = "HH:mm:ss tt";
 
-        //  Google Sheet API init.
+        // Define request parameters.
         private static readonly string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
 
         private static readonly string ApplicationName = "WoM Google Spreadsheet Access";
+        private static readonly string spreadsheetId = "16W56LWqt6wDaYAU5xNdTWCdaY_gkuQyl4CE1lPpUui4";  // ID as written in the URL bar.
+        private static readonly string sheet = "Bank Roll";                                             // Name of the Sheet page in question.
+        private static readonly string range = $"{sheet}!G159:Y171";
+        private static SheetsService service;
 
         public static void Sheets()
         {
-            UserCredential credential;
-
+            //  Console output
             Console.WriteLine(DateTime.Now.ToString(Format) + "Google " + "     OAuth login");
 
+            UserCredential credential;
+
             using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                new FileStream("google-credentials.json", FileMode.Open, FileAccess.Read))
             {
                 // The file token.json stores the user's access and refresh tokens, and is created
                 // automatically when the authorization flow completes for the first time.
@@ -41,32 +47,36 @@ namespace WoM_Balance_Bot
             }
 
             // Create Google Sheets API service.
-            var service = new SheetsService(new BaseClientService.Initializer()
+            service = new SheetsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
 
-            // Define request parameters.
-            String spreadsheetId = "16W56LWqt6wDaYAU5xNdTWCdaY_gkuQyl4CE1lPpUui4";  // ID as written in the URL bar.
-            String sheet = "Bank Roll";                                             // Name of the Sheet page in question.
-            String range = $"{sheet}!G159:Y169";                                    // Range of rows to read and scrape.
+            // Write here the other functions.
+            ReadEntries();
+        }
 
-            var request = service.Spreadsheets.Values.Get(spreadsheetId, range);
+        private static void ReadEntries()
+        {
+            SpreadsheetsResource.ValuesResource.GetRequest request =
+                    service.Spreadsheets.Values.Get(spreadsheetId, range);
 
             var response = request.Execute();
-            var values = response.Values;
+            IList<IList<object>> values = response.Values;
             if (values != null && values.Count > 0)
             {
+                /*
                 foreach (var row in values)
                 {
-                    //Console.WriteLine("{0} {2}", row[0]);             need to be edited!!!
-                }
+                    // Refactor with a database instead.
+                }*/
             }
             else
             {
                 Console.WriteLine("No data found.");
             }
+            Console.Read();
         }
     }
 }
